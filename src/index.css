@@ -20,35 +20,19 @@
 
 }
 
+#root {
+    height: 100%;
+    width: 100%;
+}
+
 html,
 body {
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     margin: 0;
     overflow: hidden;
     background-color: var(--first-background-dark);
     font-family: Montserrat, system-ui;
     color: var(--text-color-dark);
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-}
-
-.text-uppercase {
-    text-transform: uppercase;
-}
-.font-bold{
-    font-weight: 700;
-}
-.font-regular{
-    font-weight: 400;
-}
-.separator{
-    display: block;
-    border: white 1px solid;
-    opacity: 10%;
-    height: 1px;
+    font-size: 16px;
 }
