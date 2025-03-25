@@ -8,9 +8,12 @@ import { toggleFilterVisibility } from '../../store/slices/uiSlice';
 
 function FooterComponent({ isFilterOpen, closeFilters }) {
     return (
-        <footer className="block relative z-[100] rounded-[15px] m-[20px] w-auto overflow-hidden">
-            <Filter isFilterOpen={closeFilters} />
-            <FooterButtons />
+        <footer className="block relative rounded-[15px] m-[20px] w-auto overflow-hidden">
+            <Filter/>
+            <div className="flex flex-col w-full">
+                <Search />
+                <FooterButtons />
+            </div>
         </footer>
     );
 }

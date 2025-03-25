@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'; // Добавляем useRef и useState
+import React, { useEffect } from 'react';
 import './Filter.css';
 import { connect } from 'react-redux';
-// ... (остальные импорты)
 import {
     setVacancyTypeFilter,
     setTimeFilter,
@@ -78,14 +77,6 @@ function FilterComponent({
         setMarketplacesFilter(updatedMarketplaces);
         filterData();
     };
-
-    const handleResetFilters = () => {
-        resetFilters();
-        filterData();
-        closeFilters();
-    };
-
-
 
     return (
         <div className={`filters-container ${!isFilterOpen ? 'collapsed' : ''}`} >

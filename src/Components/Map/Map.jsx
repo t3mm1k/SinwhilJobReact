@@ -1,35 +1,35 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Map.css';
 import { connect } from 'react-redux';
 import { fetchMapData } from '../../store/slices/mapDataSlice';
+import { setSearchValue, setSearchResult } from '../../store/slices/searchSlice';
 
-function MapComponent({ mapData, fetchMapData }) {
+function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, searchResult }) {
     const mapRef = useRef(null);
-    const [mapInstance, setMapInstance] = React.useState(null);
+    const [mapInstance, setMapInstance] = useState(null);
+    const [ymaps3Ready, setYmaps3Ready] = useState(false);
 
     useEffect(() => {
         fetchMapData();
     }, [fetchMapData]);
 
     useEffect(() => {
-        if (!mapRef.current) {
-            console.error("Map element not found (mapRef.current is null).");
+        if (!window.ymaps3 || !window.ymaps3.ready) {
+            return;
+        }
+        async function waitForYmaps3() {
+            await window.ymaps3.ready;
+            setYmaps3Ready(true);
+        }
+        waitForYmaps3();
+    }, []);
+
+    useEffect(() => {
+        if (!mapRef.current || !ymaps3Ready || mapInstance) {
             return;
         }
 
         async function initMap() {
-            if (mapInstance) {
-                console.log("Map already initialized, skipping creation");
-                return;
-            }
-
-            if (!window.ymaps3 || !window.ymaps3.ready) {
-                console.error("Yandex Maps 3 library is not loaded.");
-                return;
-            }
-
-            await window.ymaps3.ready;
-
             const {
                 YMap,
                 YMapDefaultSchemeLayer,
@@ -49,22 +49,14 @@ function MapComponent({ mapData, fetchMapData }) {
             setMapInstance(newMap);
         }
         initMap();
-    }, [mapInstance]); // Include fetchMapData for completeness, though it's not directly used here.
+    }, [ymaps3Ready, mapInstance]);
 
     useEffect(() => {
-        if (!mapInstance) {
-            console.log("Map not yet initialized, skipping data processing");
+        if (!mapInstance || !ymaps3Ready) {
             return;
         }
 
         async function updateMapData() {
-            if (!window.ymaps3 || !window.ymaps3.ready) {
-                console.error("Yandex Maps 3 library is not loaded.");
-                return;
-            }
-
-            await window.ymaps3.ready;
-
             const { YMapMarker, YMapListener } = window.ymaps3;
 
             let clustererImport = null;
@@ -77,9 +69,14 @@ function MapComponent({ mapData, fetchMapData }) {
 
             const { YMapClusterer, clusterByGrid } = clustererImport;
 
-            function createMarketplaceMarker(marketplace, adInfo) {
+            function onMarkerClick(coordinates, marketplace, adInfo) {
+                console.log('markerClick');
+            }
+
+            function createMarketplaceMarker(marketplace, adInfo, coordinates) {
                 const markerElement = document.createElement('div');
                 markerElement.classList.add('custom-marker');
+                markerElement.style.cursor = 'pointer';
 
                 let logoSrc = '';
                 switch (marketplace) {
@@ -98,13 +95,15 @@ function MapComponent({ mapData, fetchMapData }) {
                         <p>${adInfo}</p>
                     </div>
                 `;
+
+                markerElement.addEventListener('click', () => onMarkerClick(coordinates, marketplace, adInfo));
                 return markerElement;
             }
 
             const markerRenderer = (feature) => {
                 const { marketplace, adInfo } = feature.properties;
                 const coordinates = feature.geometry.coordinates;
-                const markerElement = createMarketplaceMarker(marketplace, adInfo);
+                const markerElement = createMarketplaceMarker(marketplace, adInfo, coordinates);
                 return new YMapMarker({ coordinates }, markerElement);
             };
 
@@ -113,20 +112,28 @@ function MapComponent({ mapData, fetchMapData }) {
                 const clusterElement = document.createElement('div');
                 clusterElement.classList.add('cluster-circle');
                 clusterElement.textContent = count;
+                clusterElement.style.cursor = 'pointer';
+
+                clusterElement.addEventListener('click', () => {
+                    mapInstance.setLocation({
+                        center: coordinates,
+                        zoom: Math.min(mapInstance.getLocation().zoom + 2, 17),
+                        duration: 500
+                    });
+                });
                 return new YMapMarker({ coordinates }, clusterElement);
             }
+
             function jitterCoordinates(coordinates, jitterAmount = 0.0001) {
                 const [lng, lat] = coordinates;
                 const jitteredLng = lng + (Math.random() - 0.5) * 2 * jitterAmount;
                 const jitteredLat = lat + (Math.random() - 0.5) * 2 * jitterAmount;
                 return [jitteredLng, jitteredLat];
             }
-            console.log("MapData", mapData);
 
             if (!mapData) {
-                return; // Handle the case where mapData is still loading
+                return;
             }
-
 
             const points = mapData.map((item, i) => {
                 const coords = jitterCoordinates(item.coordinates)
@@ -141,18 +148,16 @@ function MapComponent({ mapData, fetchMapData }) {
                     properties: {
                         marketplace: item.marketplace,
                         adInfo: item.adInfo,
-                        vacancy_type: item.vacancy_type
+                        vacancy_type: item.vacancy_type,
                     }
                 };
             });
 
-            //Clear old markers and clusters.
             mapInstance.children.forEach((child) => {
                 if (child instanceof YMapClusterer || child instanceof YMapMarker) {
                     mapInstance.removeChild(child);
                 }
             });
-
 
             const clusterer = new YMapClusterer({
                 method: clusterByGrid({ gridSize: 48 }),
@@ -163,7 +168,6 @@ function MapComponent({ mapData, fetchMapData }) {
 
             mapInstance.addChild(clusterer);
 
-
             const mapListener = new YMapListener({
                 layer: 'any',
                 onUpdate: (event) => {
@@ -171,7 +175,6 @@ function MapComponent({ mapData, fetchMapData }) {
                     const markers = mapRef.current.querySelectorAll('.custom-marker');
 
                     markers.forEach(marker => {
-
                         if (!marker.classList.contains('cluster-circle')) {
                             if (zoom < 12) {
                                 marker.classList.add('icon-only');
@@ -184,11 +187,24 @@ function MapComponent({ mapData, fetchMapData }) {
             });
 
             mapInstance.addChild(mapListener);
-
-
         }
         updateMapData();
-    }, [mapData, mapInstance]);
+    }, [mapData, mapInstance, ymaps3Ready]);
+
+
+    useEffect(() => {
+        if (!mapInstance || !searchResult) {
+            return;
+        }
+        console.log(searchResult, "Перемещение карты");
+        mapInstance.update({
+            location: {
+                center: searchResult,
+                zoom: 17,
+                duration: 400
+            }
+        });
+    }, [mapInstance, searchResult, setSearchValue, searchValue]);
 
     return (
         <div id="map" className="absolute top-[10px] left-[10px] w-[calc(100%-20px)] h-[calc(100%-20px)]" ref={mapRef}></div>
@@ -197,10 +213,13 @@ function MapComponent({ mapData, fetchMapData }) {
 
 const mapStateToProps = (state) => ({
     mapData: state.mapData.filteredData,
+    searchValue: state.search.searchValue,
+    searchResult: state.search.searchResult,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     fetchMapData: () => dispatch(fetchMapData()),
+    setSearchValue: (value) => dispatch(setSearchValue(value))
 });
 
 const Map = connect(mapStateToProps, mapDispatchToProps)(MapComponent);

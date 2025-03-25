@@ -1,5 +1,5 @@
 .filters-container {
-    @apply relative  bg-[color:var(--second-background-dark)] z-[101] order-4 overflow-hidden rounded-[15px_15px_0px_0px] border-0;
+    @apply bg-[color:var(--second-background-dark)] order-4 overflow-hidden rounded-[15px_15px_0px_0px] border-0;
     margin: 0px;
     max-height: 1000px;
     transition: max-height 0.5s ease-in-out; /* Add transition for smooth animation */
