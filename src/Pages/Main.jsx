@@ -1,9 +1,9 @@
 // src/Pages/Main.jsx
 
 import React from "react";
-import Header from "../Components/Header/Header";
-import Footer from "../Components/Footer/Footer";
-import Map from "../Components/Map/Map";
+import Header from "../Components/Main/Header/Header";
+import Footer from "../Components/Main/Footer/Footer";
+import Map from "../Components/Main/Map/Map";
 
 
 export default function () {

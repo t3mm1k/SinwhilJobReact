@@ -1,9 +1,9 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     isFilterOpen: false,
     isSearchOpen: false,
+    isClusterSelectionOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -16,34 +16,62 @@ const uiSlice = createSlice({
         setSearchVisibility: (state, action) => {
             state.isSearchOpen = action.payload;
         },
+        setIsClusterSelectionOpen: (state, action) => {
+            state.isClusterSelectionOpen = action.payload;
+        },
     },
 });
 
-export const { setFilterVisibility, setSearchVisibility } = uiSlice.actions;
+export const { setFilterVisibility, setSearchVisibility, setIsClusterSelectionOpen } = uiSlice.actions;
 export default uiSlice.reducer;
 
 export const toggleFilterVisibility = createAsyncThunk(
     'ui/toggleFilterVisibility',
     async (_, { getState, dispatch }) => {
-        const { isSearchOpen, isFilterOpen } = getState().ui;
+        const { isSearchOpen, isClusterSelectionOpen } = getState().ui;
 
         if (isSearchOpen) {
             dispatch(setSearchVisibility(false));
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
         }
-        dispatch(setFilterVisibility(!isFilterOpen));
+        if (isClusterSelectionOpen) {
+            dispatch(setIsClusterSelectionOpen(false));
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+        dispatch(setFilterVisibility(!getState().ui.isFilterOpen));
     }
 );
 
 export const toggleSearchVisibility = createAsyncThunk(
     'ui/toggleSearchVisibility',
     async (_, { getState, dispatch }) => {
-        const { isSearchOpen, isFilterOpen } = getState().ui;
+        const { isFilterOpen, isClusterSelectionOpen } = getState().ui;
 
         if (isFilterOpen) {
             dispatch(setFilterVisibility(false));
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
         }
-        dispatch(setSearchVisibility(!isSearchOpen));
+        if (isClusterSelectionOpen) {
+            dispatch(setIsClusterSelectionOpen(false));
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+        dispatch(setSearchVisibility(!getState().ui.isSearchOpen));
+    }
+);
+
+export const toggleClusterSelectionVisibility = createAsyncThunk(
+    'ui/toggleClusterSelectionVisibility',
+    async (_, { getState, dispatch }) => {
+        const { isFilterOpen, isSearchOpen } = getState().ui;
+
+        if (isFilterOpen) {
+            dispatch(setFilterVisibility(false));
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+        if (isSearchOpen) {
+            dispatch(setSearchVisibility(false));
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+        dispatch(setIsClusterSelectionOpen(!getState().ui.isClusterSelectionOpen));
     }
 );
