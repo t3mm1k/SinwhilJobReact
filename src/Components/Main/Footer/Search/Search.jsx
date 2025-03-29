@@ -36,7 +36,7 @@ function Search({ isSearchOpen, updateSearchPrompts, searchPrompts, searchValue,
                     },
                     text: value,
                 });
-                console.log(searchResult);
+                // console.log(searchResult);
 
                 const prompts = searchResult.map((item) => ({
                     main: item.properties.name,

@@ -10,7 +10,7 @@ function Marketplace({marketplace}) {
     }
 
     return (
-        <div className="flex justify-center items-center h-auto bg-[var(--second-background-dark)] gap-[10px] rounded-[10px]">
+        <div className="flex justify-center items-center h-auto bg-[var(--second-background-color)] gap-[10px] rounded-[10px]">
             <img src={logoSrc} alt={marketplace} className="w-[35px] rounded-full p-[5px]" />
             <p className="font-[700] uppercase">{marketplace}</p>
         </div>

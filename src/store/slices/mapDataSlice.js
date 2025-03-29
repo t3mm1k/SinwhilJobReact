@@ -7,12 +7,11 @@ export const fetchMapData = createAsyncThunk(
         signal.addEventListener('abort', () => controller.abort());
 
         try {
-            const response = await fetch('data.json', { signal: controller.signal });
+            const response = await fetch('data_db.json', { signal: controller.signal });
             const data = await response.json();
             return data;
         } catch (error) {
             if (error.name === 'AbortError') {
-                console.log('Fetch aborted');
                 return;
             } else {
                 throw error;
@@ -60,19 +59,34 @@ const mapDataSlice = createSlice({
             for (const vacancy of state.data) {
                 let matchesFilter = true;
 
-                if (state.filters.vacancy_type !== "" && vacancy?.vacancy_type !== state.filters.vacancy_type) {
+                const vacancyType = vacancy.vacancy_type.toLowerCase();
+
+                // Преобразование city в строку
+                const vacancyCity = String(vacancy.address.city).toLowerCase(); // Преобразование и приведение к нижнему регистру
+                const filterCity = String(state.filters.city).toLowerCase(); // Преобразование фильтра в нижний регистр
+
+                if (state.filters.vacancy_type !== "" && vacancyType !== state.filters.vacancy_type) {
                     matchesFilter = false;
                     continue;
                 }
-                if (state.filters.vacancy_type === "part-time" && state.filters.time !== "" && vacancy?.time !== state.filters.time) {
-                    matchesFilter = false;
-                    continue;
+
+                if (state.filters.vacancy_type === "part-time" && state.filters.time !== "") { // Добавлена проверка на наличие vacancy.dates
+                    if (!((state.filters.time === "1-day") && (vacancy.dates.length === 1))) {
+                        if (!((state.filters.time === "1-week") && (vacancy.dates.length < 7))) {
+                            if (!((state.filters.time === "1-month") && (vacancy.dates.length < 31))) {
+                                if (!((state.filters.time === "more-1-month") && (vacancy.dates.length > 31))) {
+                                    matchesFilter = false;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
                 }
                 if (state.filters.marketplaces.length > 0 && !state.filters.marketplaces.includes(vacancy?.marketplace)) {
                     matchesFilter = false;
                     continue;
                 }
-                if (state.filters.city !== "" && vacancy?.city !== state.filters.city) {
+                if (state.filters.city !== "" && vacancyCity !== filterCity) {
                     matchesFilter = false;
                     continue;
                 }

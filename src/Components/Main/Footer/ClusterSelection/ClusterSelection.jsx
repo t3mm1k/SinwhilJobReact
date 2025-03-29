@@ -12,7 +12,7 @@ function ClusterSelection({ isClusterSelectionOpen, clusterData }) {
                     <Option
                         key={index}
                         position={item.properties.position}
-                        adInfo={item.properties.adInfo}
+                        salary={item.properties.salary}
                         marketplace={item.properties.marketplace}
                     />
                 ))}

@@ -33,7 +33,7 @@ function FilterComponent({
                              closeFilters
                          }) {
 
-    const uniqueCities = [...new Set(data.map(item => item?.city).filter(Boolean))];
+    const uniqueCities = [...new Set(data.map(item => item?.address?.city).filter(Boolean))];
     const uniquePositions = [...new Set(data.map(item => item?.position).filter(Boolean))];
 
     useEffect(() => {
@@ -83,7 +83,7 @@ function FilterComponent({
             <div className='filters-content' >
                 <VacancyTypeFilter selectedVacancyType={filters.vacancy_type} onChange={handleVacancyTypeChange} />
 
-                {filters.vacancy_type !== "full-time" && (
+                {filters.vacancy_type === "part-time" && (
                     <TimeFilter selectedTime={filters.time} onChange={handleTimeChange} />
                 )}
 

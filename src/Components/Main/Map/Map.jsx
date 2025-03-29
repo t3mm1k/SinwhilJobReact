@@ -77,11 +77,11 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
 
             const { YMapClusterer, clusterByGrid } = clustererImport;
 
-            function onMarkerClick(coordinates, marketplace, adInfo) {
-                console.log('markerClick');
+            function onMarkerClick(coordinates, marketplace, salary) {
+                // console.log('markerClick');
             }
 
-            function createMarketplaceMarker(marketplace, adInfo, coordinates, position) {
+            function createMarketplaceMarker(marketplace, salary, coordinates, position, vacancy_type) {
                 const markerElement = document.createElement('div');
                 markerElement.classList.add('custom-marker');
                 markerElement.style.cursor = 'pointer';
@@ -95,23 +95,27 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
                     case 'Boxberry': logoSrc = './img/marketplace-logo/Boxberry.png'; break;
                     default: logoSrc = './img/icons/logo-dark.svg';
                 }
-
+                let salaryText = vacancy_type === "part_time" ? " / за смену" : " / в месяц";
                 markerElement.innerHTML = `
                     <img src="${logoSrc}" alt="${marketplace}">
                     <div class="marker-context">
-                        <p>${position  }</p>
-                        <p>${adInfo}</p>
+                        <p>${position}</p>
+                        <p>${salary} ${salaryText}</p>
                     </div>
                 `;
 
-                markerElement.addEventListener('click', () => onMarkerClick(coordinates, marketplace, adInfo));
+                markerElement.addEventListener('click', () => onMarkerClick(coordinates, marketplace, salary));
                 return markerElement;
             }
 
             const markerRenderer = (feature) => {
-                const { marketplace, adInfo } = feature.properties;
-                const coordinates = feature.geometry.coordinates;
-                const markerElement = createMarketplaceMarker(marketplace, adInfo, coordinates, feature.properties.position);
+                const { marketplace, position } = feature.properties;
+                console.log(feature);
+                const coordinates = [feature.properties.longitude, feature.properties.latitude]; // Получаем координаты из feature.properties
+                const salary = feature.properties.salary;
+                const vacancy_type = feature.properties.vacancy_type;
+
+                const markerElement = createMarketplaceMarker(marketplace, salary, coordinates, position);
 
                 markerElement.addEventListener('click', (e) => { // Added click listener for markers
                     e.stopPropagation(); // Prevent map click event
@@ -167,7 +171,7 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
             }
 
             const points = mapData.map((item, i) => {
-                const coords = jitterCoordinates(item.coordinates)
+                const coords = jitterCoordinates([item.address.longitude, item.address.latitude])
 
                 return {
                     type: 'Feature',
@@ -178,9 +182,11 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
                     },
                     properties: {
                         marketplace: item.marketplace,
-                        adInfo: item.adInfo,
+                        salary: item.salary,
                         vacancy_type: item.vacancy_type,
-                        position: item.position
+                        position: item.position,
+                        latitude: item.address.latitude,
+                        longitude: item.address.longitude
                     }
                 };
             });
@@ -238,7 +244,7 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
         if (!mapInstance || !searchResult) {
             return;
         }
-        console.log(searchResult, "Перемещение карты");
+        // console.log(searchResult, "Перемещение карты");
         mapInstance.update({
             location: {
                 center: searchResult,

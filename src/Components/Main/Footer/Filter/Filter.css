@@ -1,5 +1,5 @@
 .filters-container {
-    @apply bg-[color:var(--second-background-dark)] order-4 overflow-hidden rounded-[15px_15px_0px_0px] border-0;
+    @apply bg-[color:var(--second-background-color)] order-4 overflow-hidden rounded-[15px_15px_0px_0px] border-0;
     margin: 0px;
     max-height: 1000px;
     transition: max-height 0.3s ease-in-out; /* Add transition for smooth animation */
@@ -22,21 +22,21 @@
     @apply flex justify-between gap-2.5 shrink;
 }
 .toggle-button {
-    @apply flex grow bg-[color:var(--second-background-dark)] text-[color:var(--text-color-dark)] items-center gap-2.5 font-bold text-[8px] uppercase min-w-min p-2.5 rounded-[10px] border-[solid] border;
+    @apply flex grow bg-[color:var(--second-background-color)] text-[color:var(--text-color)] items-center gap-2.5 font-bold text-[8px] uppercase min-w-min p-2.5 rounded-[10px] border-[solid] border;
 
 }
 .marketplace-button img {
     @apply h-6 w-6 rounded-[50%];
 }
 .toggle-button.active {
-    @apply bg-[color:var(--text-color-dark)] text-[color:var(--second-background-dark)];
+    @apply bg-[color:var(--text-color)] text-[color:var(--second-background-color)];
 }
 .circle {
     @apply border w-[15px] h-[15px] rounded-[100px] border-[solid];
 }
 .circle.active {
-    /*@apply bg-[color:var(--text-color-dark)] w-[11px] h-[11px];*/
-    outline: var(--second-background-dark) 2px solid;
+    /*@apply bg-[color:var(--text-color)] w-[11px] h-[11px];*/
+    outline: var(--second-background-color) 2px solid;
 }
 .marketplace-logos {
     @apply grid grid-cols-[repeat(3,auto)] grid-rows-[repeat(2,auto)] gap-[5px] w-full;
@@ -45,12 +45,12 @@
     @apply p-[5px] border-0;
 }
 .marketplace-button.active {
-    @apply bg-[color:var(--second-background-dark)] text-[color:var(--text-color-dark)];
-    outline: var(--text-color-dark) 1px solid;
+    @apply bg-[color:var(--second-background-color)] text-[color:var(--text-color)];
+    outline: var(--text-color) 1px solid;
 }
 .filter-select {
-    @apply font-bold text-[8px] opacity-50 bg-[15px] border appearance-none w-full text-[color:var(--text-color-dark)] p-2.5 rounded-[10px] border-[solid];
-    background: var(--second-background-dark) url("../../../../../public/img/icons/expand_down.svg")
+    @apply font-bold text-[8px] opacity-50 bg-[15px] border appearance-none w-full text-[color:var(--text-color)] p-2.5 rounded-[10px] border-[solid];
+    background: var(--second-background-color) url("../../../../../public/img/icons/expand_down.svg")
     no-repeat right 10px center;
     -webkit-appearance: none;
     -moz-appearance: none;

@@ -18,7 +18,6 @@ const searchSlice = createSlice({
         },
         setSearchResult(state, action) {
             state.searchResult = action.payload;
-            console.log('searchResult: ', state.searchResult);
         },
     },
 });
