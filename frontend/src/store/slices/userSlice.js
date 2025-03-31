@@ -3,7 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     name: 'Артем',
     id: '123123123',
-    selectedVacancy: {}
+    selectedVacancy: {},
+    balance: 0,
+    favorites: [],
+    rezume: {
+        first_name: "",
+        last_name: "",
+        phone: "",
+        expirience: "",
+        desired_salary: "",
+        additional_info: ""
+    }
 };
 
 const userSlice = createSlice({
