@@ -9,7 +9,7 @@ function Header() {
                 <img src="./img/icons/arrow-left.svg" alt="Назад" />
                 Назад
             </button>
-            <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center">Профиль</p>
+            <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center text-[1rem]">Профиль</p>
             <p></p>
         </div>
     );

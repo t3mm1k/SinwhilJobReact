@@ -1,30 +1,30 @@
 import React from "react";
 
-function FormField({ id, label, type = 'text', value, onChange, placeholder, rows, name }){
+function FormField({ id, label, type = 'text', placeholder, rows, name, handleChange, value}){
     return (
         <div>
-            <label htmlFor={id} className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+            <label htmlFor={id} className="block font-semibold uppercase mb-1 opacity-50 focus:opacity-100 text-[0.7rem]">
                 {label}
             </label>
             {type === 'textarea' ? (
                 <textarea
                     id={id}
-                    name={name || id} // Use name prop or fallback to id
-                    rows={rows || 4} // Default rows or specify
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                    placeholder={placeholder}
+                    name={name || id}
+                    rows={rows || 4}
                     value={value}
-                    onChange={onChange}
+                    className="w-full bg-[var(--first-background-color)] border border-white opacity-50 rounded-lg p-3 focus:opacity-100 active:opacity-100"
+                    placeholder={placeholder}
+                    onChange={handleChange}
                 />
             ) : (
                 <input
                     type={type}
                     id={id}
-                    name={name || id} // Use name prop or fallback to id
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                    placeholder={placeholder}
+                    name={name || id}
                     value={value}
-                    onChange={onChange}
+                    className="w-full bg-[var(--first-background-color)] border border-white opacity-50 rounded-lg p-3 focus:opacity-100"
+                    placeholder={placeholder}
+                    onChange={handleChange}
                 />
             )}
         </div>

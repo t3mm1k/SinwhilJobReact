@@ -6,11 +6,11 @@ const initialState = {
     selectedVacancy: {},
     balance: 0,
     favorites: [],
-    rezume: {
+    resume: {
         first_name: "",
         last_name: "",
         phone: "",
-        expirience: "",
+        experience: "",
         desired_salary: "",
         additional_info: ""
     }
@@ -29,8 +29,12 @@ const userSlice = createSlice({
             state.selectedVacancy = action.payload;
             console.log(state.selectedVacancy);
         },
+        updateUserResume: (state, action) => {
+            state.resume = action.payload;
+            console.log(state.resume);
+        },
     },
 });
 
-export const { updateUser, setSelectedVacancy } = userSlice.actions;
+export const { updateUserResume, setSelectedVacancy } = userSlice.actions;
 export default userSlice.reducer;
