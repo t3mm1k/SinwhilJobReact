@@ -5,7 +5,7 @@ function Header() {
     const store = useSelector((state) => state);
 
     return (
-        <header className="flex relative bg-[#242424] rounded-[15px] justify-between px-[20px] py-[5px] items-center z-[100] m-[20px]">
+        <header className=" flex relative bg-[#242424] rounded-[15px] justify-between px-[20px] py-[5px] items-center z-[100] m-[20px]">
             <img src="./img/icons/logo-dark.svg" alt="Логотип" />
             <div className="flex gap-2 items-center">
                 <img src="./img/user-avatar.png" alt="Аватар пользователя" className="rounded-full w-[32px]" />

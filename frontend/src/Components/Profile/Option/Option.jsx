@@ -1,6 +1,6 @@
 function option(props) {
     return (
-        <button className="flex gap-[5px]  items-center rounded-[10px] w-full p-2 bg-[var(--second-background-color)]" index={props.index}>
+        <button className="flex gap-[5px]  items-center rounded-[10px] w-full px-3 py-2 bg-[var(--second-background-color)]" index={props.index}>
             <img src={`./img/icons/${props.type}.svg`} alt={props.label} />
             <div className="flex gap-[10px] items-center justify-between flex-grow">
                 <p>{props.label}</p>

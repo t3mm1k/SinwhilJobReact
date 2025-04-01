@@ -1,7 +1,7 @@
 import Option from "../Option/Option";
 import { useSelector } from 'react-redux';
 
-const types = ["resume", "favorites", "balance", "help"]
+const types = ["resume", "favorites", "help"]
 
 function OptionsForm() {
     const favorites = useSelector((state) => state.user.favorites);
