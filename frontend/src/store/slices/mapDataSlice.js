@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Define the API endpoint (replace with your actual backend URL)
 const API_ENDPOINT = 'http://localhost:7000/api/vacancies';
 
 export const fetchMapData = createAsyncThunk(

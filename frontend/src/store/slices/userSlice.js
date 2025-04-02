@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     name: 'Артем',
     id: '123123123',
+    avatar: './img/user-avatar.png',
     selectedVacancy: {},
     balance: 0,
     favorites: [],
@@ -27,11 +28,9 @@ const userSlice = createSlice({
         },
         setSelectedVacancy: (state, action) => {
             state.selectedVacancy = action.payload;
-            console.log(state.selectedVacancy);
         },
         updateUserResume: (state, action) => {
             state.resume = action.payload;
-            console.log(state.resume);
         },
     },
 });

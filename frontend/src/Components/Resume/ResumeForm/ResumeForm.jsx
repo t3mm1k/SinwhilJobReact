@@ -5,13 +5,49 @@ import {connect, useSelector} from "react-redux";
 import FormField from "../FormField/FormField";
 import {updateUserResume} from "../../../store/slices/userSlice";
 
+function formatPhone(value) {
+    // 1. Убираем все нецифровое, кроме знака + в начале (если он есть)
+    let cleaned = ('' + value).replace(/[^\d+]/g, '');
+    if (cleaned.startsWith('+')) {
+        cleaned = '+' + cleaned.substring(1).replace(/[^\d]/g, ''); // Убираем не цифры после +
+    } else {
+        cleaned = cleaned.replace(/[^\d]/g, ''); // Убираем все не цифры
+    }
+
+    // 2. Приводим к формату +7 (если начинается с 8 или просто с 9)
+    if (cleaned.startsWith('8')) {
+        cleaned = '+7' + cleaned.substring(1);
+    } else if (cleaned.length === 10 && cleaned.startsWith('9')) { // Российский мобильный без кода страны
+        cleaned = '+7' + cleaned;
+    } else if (!cleaned.startsWith('+') && cleaned.length > 0) {
+        cleaned = '+' + cleaned; // Добавляем +, если его нет
+    }
+
+
+    // 3. Нарезаем и форматируем (пример для +7 XXX XXX-XX-XX)
+    const match = cleaned.match(/^(\+?\d{1,1})?(\d{0,3})?(\d{0,3})?(\d{0,2})?(\d{0,2})?/);
+
+    if (!match) {
+        return value; // Возвращаем оригинал, если что-то пошло не так
+    }
+
+    let formatted = '';
+    if (match[1]) formatted += match[1];
+    if (match[2]) formatted += (formatted.length > 1 ? ' ' : '') + match[2]; // Пробел после кода страны/города
+    if (match[3]) formatted += (match[2].length === 3 ? ' ' : '') + match[3]; // Пробел после первых 3 цифр
+    if (match[4]) formatted += (match[3].length === 3 ? '-' : '') + match[4]; // Дефис
+    if (match[5]) formatted += (match[4].length === 2 ? '-' : '') + match[5]; // Дефис
+
+    // Ограничиваем длину, чтобы соответствовать формату +7 XXX XXX-XX-XX (16 символов)
+    return formatted.substring(0, 16);
+}
+
 function ResumeFormComponent({updateUserResume}) {
 
     const navigate = useNavigate();
 
     const user = useSelector((state) => state.user);
 
-    console.log("page", user.resume)
 
     const [formData, setFormData] = useState({
         first_name: user.resume.first_name || "",
@@ -37,7 +73,7 @@ function ResumeFormComponent({updateUserResume}) {
 
         setFormData(prevFormData => ({
             ...prevFormData,
-            [id]: value
+            [id]: id === "phone" ? formatPhone(value) : value
         }));
     };
 
@@ -48,9 +84,8 @@ function ResumeFormComponent({updateUserResume}) {
     };
 
     return (
-        <div className="w-full flex flex-col gap-3"> {/* Added max-width and centering */}
+        <div className="w-full flex flex-col gap-3">
 
-            {/* Header */}
             <div className="relative justify-between h-auto">
                 <button className="relative z-10 font-semibold flex items-center justify-center gap-[5px] text-[0.8rem]" onClick={() => navigate('/profile')}>
                     <img src="./img/icons/arrow-left.svg" alt="Назад" />
@@ -60,19 +95,18 @@ function ResumeFormComponent({updateUserResume}) {
                 <p></p>
             </div>
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
                 <FormField
                     id="first_name"
                     label="ИМЯ"
-                    value={user.resume.first_name}
+                    value={formData.first_name}
                     handleChange={handleChange}
                 />
 
                 <FormField
                     id="last_name"
                     label="ФАМИЛИЯ"
-                    value={user.resume.last_name}
+                    value={formData.last_name}
                     handleChange={handleChange}
                 />
 
@@ -80,6 +114,7 @@ function ResumeFormComponent({updateUserResume}) {
                     id="phone"
                     label="ТЕЛЕФОН ДЛЯ СВЯЗИ"
                     type="tel"
+                    placeholder="+7-XXX-XXX-XX-XX"
                     value={formData.phone}
                     handleChange={handleChange}
                 />
@@ -88,9 +123,9 @@ function ResumeFormComponent({updateUserResume}) {
                     id="experience"
                     label="ОПЫТ РАБОТЫ"
                     type="textarea"
-                    rows={5} // Adjust rows as needed
+                    rows={5}
                     placeholder="Мой опыт состоит из..."
-                    value={user.resume.experience}
+                    value={formData.experience}
                     handleChange={handleChange}
                 />
 
@@ -98,7 +133,7 @@ function ResumeFormComponent({updateUserResume}) {
                     id="desired_salary"
                     label="ЖЕЛАЕМАЯ ЗАРПЛАТА"
                     placeholder="Интересует доход от..."
-                    value={user.resume.desired_salary}
+                    value={formData.desired_salary}
                     handleChange={handleChange}
                 />
 
@@ -108,7 +143,7 @@ function ResumeFormComponent({updateUserResume}) {
                     type="textarea"
                     rows={6}
                     placeholder="Также хочу рассказать..."
-                    value={user.resume.additional_info}
+                    value={formData.additional_info}
                     handleChange={handleChange}
                 />
 

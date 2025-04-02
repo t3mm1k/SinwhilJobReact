@@ -12,7 +12,7 @@ function FormField({ id, label, type = 'text', placeholder, rows, name, handleCh
                     name={name || id}
                     rows={rows || 4}
                     value={value}
-                    className="w-full bg-[var(--first-background-color)] border border-white opacity-50 rounded-lg p-3 focus:opacity-100 active:opacity-100"
+                    className="w-full bg-[var(--first-background-color)] border border-white opacity-50 rounded-lg p-3 focus:opacity-100 active:opacity-100 resize-none"
                     placeholder={placeholder}
                     onChange={handleChange}
                 />
