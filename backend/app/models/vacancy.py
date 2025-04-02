@@ -1,7 +1,7 @@
 # backend/app/models/vacancy.py
 
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Address(BaseModel):
     latitude: float
@@ -9,7 +9,7 @@ class Address(BaseModel):
     city: str
 
 class Vacancy(BaseModel):
-    _id: str
+    id: str = Field(alias="_id")
     vacancy_type: str
     photo: List[str]
     address: Address

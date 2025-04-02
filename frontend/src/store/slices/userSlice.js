@@ -32,8 +32,17 @@ const userSlice = createSlice({
         updateUserResume: (state, action) => {
             state.resume = action.payload;
         },
+        toggleFavoriteVacancy: (state, action) => {
+            console.log(1)
+            const vacancyId = action.payload;
+            if (state.favorites.includes(vacancyId)) {
+                state.favorites = state.favorites.filter(id => id !== vacancyId);
+            } else {
+                state.favorites.push(vacancyId);
+            }
+        }
     },
 });
 
-export const { updateUserResume, setSelectedVacancy } = userSlice.actions;
+export const { updateUserResume, setSelectedVacancy, toggleFavoriteVacancy} = userSlice.actions;
 export default userSlice.reducer;

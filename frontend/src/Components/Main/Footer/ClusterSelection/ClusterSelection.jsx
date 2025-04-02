@@ -6,7 +6,6 @@ import {setSelectedVacancy} from "../../../../store/slices/userSlice";
 import {setIsClusterSelectionOpen} from "../../../../store/slices/uiSlice";
 
 function ClusterSelection({isClusterSelectionOpen, clusterData, setSelectedVacancy }) {
-    console.log("ClusterData", clusterData);
     return (
         <div className={`cluster-selection ${!isClusterSelectionOpen ? 'collapsed' : ''}`}>
             <div className="flex flex-col px-[10px] bg-[#242424]">

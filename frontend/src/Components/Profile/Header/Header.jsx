@@ -1,17 +1,20 @@
 import {useNavigate} from "react-router-dom";
+import React from "react";
 
 function Header() {
     const navigate = useNavigate();
 
     return (
-        <div className="relative justify-between h-auto">
-            <button className="relative z-10 font-semibold flex items-center justify-center gap-[5px] text-[0.8rem]" onClick={() => navigate('/')}>
-                <img src="./img/icons/arrow-left.svg" alt="Назад" />
+        <header className="relative flex items-center z-0">
+            <button
+                className="flex items-center gap-2 text-[0.8rem] font-normal"
+                onClick={() => navigate(-1)}
+            >
+                <img src="/img/icons/arrow-left.svg" alt="Back" className="w-4 h-4" />
                 Назад
             </button>
-            <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center text-[1rem]">Профиль</p>
-            <p></p>
-        </div>
+            <h1 className="text-[1rem] font-semibold ml-auto mr-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Профиль</h1>
+        </header>
     );
 
     // return (

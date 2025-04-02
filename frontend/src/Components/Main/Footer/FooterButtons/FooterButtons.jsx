@@ -17,14 +17,14 @@ function FooterButtonsComponent({ toggleFilterVisibility, toggleSearchVisibility
                 <span>Поиск</span>
             </button>
             <button
-                className="footer-button flex items-center font-bold uppercase px-[10px] gap-[10px] text-[8px] border-solid border border-white rounded-[10px] px-[10px] py-[5px]"
+                className="footer-button flex items-center font-bold uppercase px-[10px] gap-[10px] text-[0.5rem] border-solid border border-white rounded-[10px] py-[5px]"
                 onClick={ () => {toggleFilterVisibility()} }
                 type="button"
             >
                 <img src="./img/icons/filter_big.svg" alt="Фильтр" />
                 <span>Фильтры</span>
             </button>
-            <button className="footer-button flex flex-col items-center font-bold uppercase px-[10px] gap-[2px] text-[8px]" onClick={() => navigate('/profile')}>
+            <button className="footer-button flex flex-col items-center font-bold uppercase px-[10px] gap-[2px] text-[0.5rem]" onClick={() => navigate('/profile')}>
                 <img src="./img/icons/user_circle.svg" alt="Профиль" />
                 <span>Профиль</span>
             </button>

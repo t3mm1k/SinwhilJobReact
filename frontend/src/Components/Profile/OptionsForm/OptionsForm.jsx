@@ -9,7 +9,7 @@ function OptionsForm() {
     const navigate = useNavigate();
 
     return(
-        <div className="flex flex-col w-full overflow-auto gap-2">
+        <div className="flex flex-col w-full overflow-auto gap-2 relative z-0">
             {types.map((type, index) => {
                 switch(type){
                     case ("balance"): return <Option index={index} type={type} label="Баланс" value="Пополнить" onClick={() => navigate(`/${type}`)} />

@@ -29,7 +29,7 @@ function CompanySelectorComponent({ // Renamed to Component
 
     return (
         <div
-            className="bg-[var(--second-background-color)] rounded-t-2xl overflow-hidden shadow-lg fixed bottom-0 w-screen mx-[-15px]"
+            className="bg-[var(--second-background-color)] rounded-t-2xl overflow-hidden shadow-lg fixed bottom-0 w-screen mx-[-15px] z-30"
             style={selectorStyle}
         >
 

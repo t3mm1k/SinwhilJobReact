@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_ENDPOINT = 'http://localhost:7000/api/vacancies';
+const API_ENDPOINT = 'http://localhost:8000/api/vacancies';
 
 export const fetchMapData = createAsyncThunk(
     'mapData/fetchMapData',
@@ -132,7 +132,6 @@ const mapDataSlice = createSlice({
             .addCase(fetchMapData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-                console.error("Fetch Map Data Rejected:", action.error);
             });
     },
 });

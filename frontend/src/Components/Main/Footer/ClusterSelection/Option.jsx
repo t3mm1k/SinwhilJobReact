@@ -4,9 +4,7 @@ import './Option.css';
 import { useNavigate } from 'react-router-dom';
 
 function Option({vacancy, setSelectedVacancy, setIsClusterSelectionOpen}) {
-    const navigate = useNavigate(); // Initialize useNavigate
-    console.log("Vacancy", vacancy);
-
+    const navigate = useNavigate();
     let logoSrc = '';
     switch (vacancy.marketplace) {
         case 'Wildberries': logoSrc = './img/marketplace-logo/Wildberries.png'; break;
@@ -29,7 +27,7 @@ function Option({vacancy, setSelectedVacancy, setIsClusterSelectionOpen}) {
     return (
         <button className="option flex gap-[15px] py-[10px] items-center" onClick={handleClick}>
             <img className="w-[40px] rounded-full" src={logoSrc}/>
-            <div className="flex flex-col gap-[2px] text-left text-[14px]">
+            <div className="flex flex-col gap-[2px] text-left text-sm">
                 <p className="font-bold">{vacancy.position}</p>
                 <p className="text-[0.7em]">{vacancy.salary} {salaryText}</p>
             </div>

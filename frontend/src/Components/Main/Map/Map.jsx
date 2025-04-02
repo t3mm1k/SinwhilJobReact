@@ -109,7 +109,6 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
             const markerRenderer = (feature) => {
                 const coordinates = [feature.properties.address.longitude, feature.properties.address.latitude]; // Получаем координаты из feature.properties
                 const markerElement = createMarketplaceMarker(feature.properties);
-                console.log("markerElement", feature);
 
                 markerElement.addEventListener('click', (e) => { // Added click listener for markers
                     e.stopPropagation(); // Prevent map click event
@@ -166,7 +165,7 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
 
             const points = mapData.map((item, i) => {
                 const coords = jitterCoordinates([item.address.longitude, item.address.latitude])
-                console.log("point",item);
+                // console.log("point",item);
                 return {
                     type: 'Feature',
                     id: i,

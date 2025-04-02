@@ -1,13 +1,12 @@
-import Header from "../Header/Header";
+    import Header from "../Header/Header";
 import Marketplace from "../Marketplace/Marketplace";
 import InfoLabel from "../InfoLabel/InfoLabel";
 import Calendar from "../Calendar/Calendar";
 import React from "react";
 import { useSelector } from "react-redux";
 
-function VacancyForm({ Selected }) {
+function VacancyForm({}) {
     const selectedVacancy = useSelector(state => state.user.selectedVacancy);
-    console.log(selectedVacancy);
     if (!selectedVacancy) {
         return <p>Выберите вакансию</p>;
     }
