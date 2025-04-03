@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const API_ENDPOINT = 'http://localhost:8000/api/vacancies';
-
 export const fetchMapData = createAsyncThunk(
     'mapData/fetchMapData',
     async (_, { signal }) => { // No filters argument
@@ -9,7 +7,7 @@ export const fetchMapData = createAsyncThunk(
         signal.addEventListener('abort', () => controller.abort());
 
         try {
-            const response = await fetch(API_ENDPOINT, { signal: controller.signal });  // Simple GET request
+            const response = await fetch("/api/vacancies", { signal: controller.signal });  // Simple GET request
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

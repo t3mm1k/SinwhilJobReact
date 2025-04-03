@@ -7,7 +7,7 @@ import Filter from "./Filter/Filter";
 
 function FooterComponent({ isFilterOpen, isClusterSelectionOpen }) {
     return (
-        <footer className="block relative rounded-[15px] m-[20px] w-auto overflow-hidden bg-[#242424]">
+        <footer className="block relative rounded-[15px] m-[25px] w-auto overflow-hidden bg-[#242424]">
             <Filter />
             <div className="flex flex-col w-full">
                 <ClusterSelection />

@@ -1,0 +1,32 @@
+
+version: "3.9"
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Пробрасываем порт 80 в контейнере на порт 3000 на хосте
+    environment:
+      REACT_APP_API_URL: "/api"  # Указываем React, что API находится по пути /api
+    networks:
+      - app-network
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" # Проброс порта 8000 с хоста на порт 8000 в контейнере
+    environment:
+      MONGODB_URL: mongodb+srv://t3mm1k:qSLHLtKR891VTLMX@cluster0.lx2scee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      DATABASE_NAME: sinwhiljob
+      VACANCIES_COLLECTION: vacancies
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

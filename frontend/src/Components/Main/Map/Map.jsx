@@ -241,7 +241,7 @@ function MapComponent({ mapData, fetchMapData, searchValue, setSearchValue, sear
     }, [mapInstance, searchResult, setSearchValue, searchValue]);
 
     return (
-        <div id="map" className="absolute top-[10px] left-[10px] w-[calc(100%-20px)] h-[calc(100%-20px)]" ref={mapRef}></div>
+        <div id="map" className="absolute top-[20px] left-[20px] w-[calc(100%-40px)] h-[calc(100%-40px)]" ref={mapRef}></div>
     );
 }
 
